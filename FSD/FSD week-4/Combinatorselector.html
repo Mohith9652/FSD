@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>COmbinator Selector</title>
+        <style>
+            div p{
+                color: blue;
+            }
+
+            ul+li{
+                color: green;
+            }
+
+            h2+p{
+                color: red;
+            }
+
+            h3~p{
+                color: purple;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <p>Descendent Selector</p>
+        </div>
+
+        <ul>
+            <li>Child Selector item</li>
+            <li>Child Selector item</li>
+        </ul>
+
+        <h2>Adjacent Sibling</h2>
+        <p>This is adjacent sibling</p>
+
+        <h3>General Sibling</h3>
+        <p>Sibling paragraph</p>
+        <p>Sibling paragraph</p>
+    </body>
+</html>
