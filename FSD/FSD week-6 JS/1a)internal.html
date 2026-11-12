@@ -1,16 +1,590 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Internal JavaScript Example</title>
-        <script>
-            function showMessage()
-                {
-                    alert("This is an Internal Javascript");
-                }
-        </script>
-    </head>
-    <body>
-        <h2>Internal JavaScript Example</h2>
-        <button onclick="showMessage()">Click Here</button>
-    </body>
-</html>
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const WildlifeApp());
+}
+
+class WildlifeApp extends StatelessWidget {
+  const WildlifeApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Wildlife Sanctuary Guide',
+      theme: ThemeData(
+        primarySwatch: Colors.green,
+        scaffoldBackgroundColor: const Color(0xFFF5F8F2),
+      ),
+      home: const MainScreen(),
+    );
+  }
+}
+
+// MAIN SCREEN
+
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  int selectedIndex = 0;
+
+  final List<Widget> screens = const [
+    HomeScreen(),
+    WildlifeScreen(),
+    SanctuaryScreen(),
+    ConservationScreen(),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: screens[selectedIndex],
+
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: selectedIndex,
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.green.shade800,
+        unselectedItemColor: Colors.grey,
+        onTap: (index) {
+          setState(() {
+            selectedIndex = index;
+          });
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.pets),
+            label: 'Wildlife',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.explore),
+            label: 'Sanctuaries',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.eco),
+            label: 'Protect',
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// SCREEN 1: HOME
+
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Wildlife Sanctuary Guide'),
+        backgroundColor: Colors.green.shade800,
+        foregroundColor: Colors.white,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(18),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(25),
+              decoration: BoxDecoration(
+                color: Colors.green.shade800,
+                borderRadius: BorderRadius.circular(18),
+              ),
+              child: const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(Icons.forest,
+                      size: 65, color: Colors.white),
+                  SizedBox(height: 15),
+                  Text(
+                    'Explore the Wild!',
+                    style: TextStyle(
+                      fontSize: 27,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    'Discover animals, forests and nature. '
+                    'Learn how to protect wildlife.',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 25),
+            const Text(
+              'Welcome to Wildlife Guide',
+              style: TextStyle(
+                fontSize: 21,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              'This application helps people explore '
+              'wildlife sanctuaries and understand the '
+              'importance of biodiversity and conservation.',
+              style: TextStyle(fontSize: 16, height: 1.5),
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              'Wildlife Highlights',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 10),
+            const AnimalCard(
+              emoji: '🐅',
+              name: 'Bengal Tiger',
+              detail: 'Endangered species',
+            ),
+            const AnimalCard(
+              emoji: '🐘',
+              name: 'Indian Elephant',
+              detail: 'Endangered species',
+            ),
+            const AnimalCard(
+              emoji: '🦚',
+              name: 'Indian Peacock',
+              detail: 'National bird of India',
+            ),
+            const SizedBox(height: 15),
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.green.shade100,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: const Text(
+                'SDG 15 - LIFE ON LAND\n\n'
+                'Protect forests, preserve biodiversity '
+                'and save endangered animals.',
+                style: TextStyle(fontSize: 15, height: 1.5),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// REUSABLE ANIMAL CARD
+
+class AnimalCard extends StatelessWidget {
+  final String emoji;
+  final String name;
+  final String detail;
+
+  const AnimalCard({
+    super.key,
+    required this.emoji,
+    required this.name,
+    required this.detail,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: ListTile(
+        leading: Text(
+          emoji,
+          style: const TextStyle(fontSize: 35),
+        ),
+        title: Text(
+          name,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+        subtitle: Text(detail),
+      ),
+    );
+  }
+}
+
+// SCREEN 2: WILDLIFE
+
+class WildlifeScreen extends StatefulWidget {
+  const WildlifeScreen({super.key});
+
+  @override
+  State<WildlifeScreen> createState() => _WildlifeScreenState();
+}
+
+class _WildlifeScreenState extends State<WildlifeScreen> {
+  final TextEditingController searchController =
+      TextEditingController();
+
+  final List<Map<String, String>> animals = [
+    {
+      'name': 'Bengal Tiger',
+      'emoji': '🐅',
+      'status': 'Endangered',
+      'habitat': 'Indian Forests',
+    },
+    {
+      'name': 'Indian Elephant',
+      'emoji': '🐘',
+      'status': 'Endangered',
+      'habitat': 'Grasslands and Forests',
+    },
+    {
+      'name': 'Indian Peacock',
+      'emoji': '🦚',
+      'status': 'Least Concern',
+      'habitat': 'Forests',
+    },
+    {
+      'name': 'Asiatic Lion',
+      'emoji': '🦁',
+      'status': 'Endangered',
+      'habitat': 'Gir Forest',
+    },
+    {
+      'name': 'Indian Leopard',
+      'emoji': '🐆',
+      'status': 'Vulnerable',
+      'habitat': 'Mountains and Forests',
+    },
+    {
+      'name': 'Red Panda',
+      'emoji': '🐼',
+      'status': 'Endangered',
+      'habitat': 'Mountain Forests',
+    },
+  ];
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final results = animals.where((animal) {
+      return animal['name']!
+          .toLowerCase()
+          .contains(searchController.text.toLowerCase());
+    }).toList();
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Wildlife Gallery'),
+        backgroundColor: Colors.green.shade800,
+        foregroundColor: Colors.white,
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(15),
+            child: TextField(
+              controller: searchController,
+              onChanged: (value) {
+                setState(() {});
+              },
+              decoration: InputDecoration(
+                hintText: 'Search animals...',
+                prefixIcon: const Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: results.isEmpty
+                ? const Center(child: Text('No animals found'))
+                : GridView.builder(
+                    padding: const EdgeInsets.all(12),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 12,
+                      mainAxisSpacing: 12,
+                      childAspectRatio: 0.9,
+                    ),
+                    itemCount: results.length,
+                    itemBuilder: (context, index) {
+                      final animal = results[index];
+
+                      return Card(
+                        child: InkWell(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: Text(animal['name']!),
+                                content: Text(
+                                  'Habitat: ${animal['habitat']}\n\n'
+                                  'Status: ${animal['status']}',
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context),
+                                    child: const Text('Close'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                animal['emoji']!,
+                                style: const TextStyle(fontSize: 55),
+                              ),
+                              const SizedBox(height: 10),
+                              Text(
+                                animal['name']!,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              const SizedBox(height: 5),
+                              Text(animal['status']!),
+                              const SizedBox(height: 5),
+                              const Text(
+                                'Tap for details',
+                                style: TextStyle(fontSize: 12),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// SCREEN 3: SANCTUARIES
+
+class SanctuaryScreen extends StatelessWidget {
+  const SanctuaryScreen({super.key});
+
+  final List<Map<String, String>> places = const [
+    {
+      'name': 'Jim Corbett National Park',
+      'location': 'Uttarakhand',
+      'emoji': '🐅',
+      'description': 'Famous for Bengal tigers.',
+    },
+    {
+      'name': 'Kaziranga National Park',
+      'location': 'Assam',
+      'emoji': '🦏',
+      'description': 'Home to one-horned rhinoceroses.',
+    },
+    {
+      'name': 'Gir National Park',
+      'location': 'Gujarat',
+      'emoji': '🦁',
+      'description': 'Famous for Asiatic lions.',
+    },
+    {
+      'name': 'Sundarbans National Park',
+      'location': 'West Bengal',
+      'emoji': '🌳',
+      'description': 'Known for mangrove forests.',
+    },
+    {
+      'name': 'Kanha National Park',
+      'location': 'Madhya Pradesh',
+      'emoji': '🦌',
+      'description': 'Famous for its forest ecosystem.',
+    },
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Explore Sanctuaries'),
+        backgroundColor: Colors.green.shade800,
+        foregroundColor: Colors.white,
+      ),
+      body: ListView.builder(
+        padding: const EdgeInsets.all(15),
+        itemCount: places.length,
+        itemBuilder: (context, index) {
+          final place = places[index];
+
+          return Card(
+            margin: const EdgeInsets.only(bottom: 15),
+            child: ListTile(
+              contentPadding: const EdgeInsets.all(15),
+              leading: Text(
+                place['emoji']!,
+                style: const TextStyle(fontSize: 38),
+              ),
+              title: Text(
+                place['name']!,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              subtitle: Text(
+                '${place['location']}\n${place['description']}',
+              ),
+              isThreeLine: true,
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+// SCREEN 4: CONSERVATION
+
+class ConservationScreen extends StatelessWidget {
+  const ConservationScreen({super.key});
+
+  final List<Map<String, dynamic>> tips = const [
+    {
+      'icon': Icons.forest,
+      'title': 'Protect Forests',
+      'description': 'Plant trees and prevent deforestation.',
+    },
+    {
+      'icon': Icons.pets,
+      'title': 'Stop Hunting',
+      'description': 'Prevent illegal wildlife hunting.',
+    },
+    {
+      'icon': Icons.delete,
+      'title': 'Reduce Pollution',
+      'description': 'Avoid plastic and keep forests clean.',
+    },
+    {
+      'icon': Icons.water_drop,
+      'title': 'Save Water',
+      'description': 'Protect rivers, lakes and water sources.',
+    },
+    {
+      'icon': Icons.campaign,
+      'title': 'Spread Awareness',
+      'description': 'Educate people about wildlife protection.',
+    },
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Wildlife Conservation'),
+        backgroundColor: Colors.green.shade800,
+        foregroundColor: Colors.white,
+      ),
+      body: ListView(
+        padding: const EdgeInsets.all(15),
+        children: [
+          Container(
+            padding: const EdgeInsets.all(22),
+            decoration: BoxDecoration(
+              color: Colors.green.shade800,
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: const Column(
+              children: [
+                Icon(
+                  Icons.eco,
+                  color: Colors.white,
+                  size: 55,
+                ),
+                SizedBox(height: 12),
+                Text(
+                  'Save Wildlife, Save Earth!',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  'Every species plays an important role '
+                  'in maintaining ecological balance.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 20),
+          const Text(
+            'Wildlife Protection Tips',
+            style: TextStyle(
+              fontSize: 21,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 10),
+          ...tips.map((tip) {
+            return Card(
+              child: ListTile(
+                leading: Icon(
+                  tip['icon'] as IconData,
+                  color: Colors.green.shade800,
+                  size: 32,
+                ),
+                title: Text(
+                  tip['title'] as String,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                subtitle: Text(tip['description'] as String),
+              ),
+            );
+          }),
+          const SizedBox(height: 15),
+          Container(
+            padding: const EdgeInsets.all(18),
+            decoration: BoxDecoration(
+              color: Colors.green.shade100,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: const Text(
+              'SDG 15 - LIFE ON LAND\n\n'
+              'Protect terrestrial ecosystems, sustainably '
+              'manage forests, prevent habitat destruction '
+              'and conserve biodiversity for future generations.',
+              style: TextStyle(fontSize: 15, height: 1.5),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
